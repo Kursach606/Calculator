@@ -10,47 +10,32 @@ namespace Calculator.Functions
     {
         public static double Count(string input)
         {
-            //строка конфликта
-            char[] operators = new char[] { '+', '-', '*', '/', '%', '^' };
-            int opIndex = CharacterStorageFunc.CharacterStorage(input);
-
-            if (opIndex == -1)
+            try
             {
-                return TransformationFunc.ParseOperand(input);
+             // туточки ошибка
+                char[] operators = new char[] { '+', '-', '*', '/', '%', '^' };
+                int opIndex = CharacterStorageFunc.CharacterStorage(input);
+
+                if (opIndex == -1)
+                {
+                    return TransformationFunc.ParseOperand(input);
+                }
+
+                string leftString = input.Substring(0, opIndex);
+                string rightString = input.Substring(opIndex + 1);
+
+                double left = Count(leftString);
+                double right = Count(rightString);
+
+                char op = input[opIndex];
+
+                return PerformFunc.Perform(left, right, op);
             }
-
-            string leftString = input.Substring(0, opIndex);
-            string rightString = input.Substring(opIndex + 1);
-
-            double left, right;
-            if (!double.TryParse(leftString, out left) || !double.TryParse(rightString, out right))
+            catch (Exception)
             {
-                throw new FormatException("Неверный формат входной строки");
+                throw new ArgumentException("Непредвиденная ошибка!");
             }
-
-            char op = input[opIndex];
-
-            switch (op)
-            {
-                case '+':
-                    return left + right;
-                case '-':
-                    return left - right;
-                case '*':
-                    return left * right;
-                case '/':
-                    if (right == 0)
-                    {
-                        throw new DivideByZeroException("Деление на ноль");
-                    }
-                    return left / right;
-                case '%':
-                    return left % right;
-                case '^':
-                    return Math.Pow(left, right);
-                default:
-                    throw new ArgumentException("Неподдерживаемый оператор");
-            }
-        }
+        }    
     }
+
 }
