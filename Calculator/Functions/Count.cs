@@ -12,7 +12,7 @@ namespace Calculator.Functions
         {
             try
             {
-                // Строчка конфликта
+                // Строчка конфликтаа
                 char[] operators = new char[] { '+', '-', '*', '/', '%', '^' };
                 int opIndex = CharacterStorageFunc.CharacterStorage(input);
 
